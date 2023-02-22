@@ -1,1 +1,3 @@
 # OFDM_SYSTEM
+
+基于ADALM-PLUTO自发自收的OFDM系统
