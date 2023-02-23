@@ -20,7 +20,7 @@ function [ zc_seq ] = Gen_zc_sequence(number)
         end
 
     end
-    %%%%%%%%%%%% 产生ZC序列
+    % 产生ZC序列
     k = (0:N-1);
     if(rem(N,2) == 1)
         zc_seq = exp(1i*pi*r.*k.*(k+1)/N);

@@ -13,6 +13,5 @@ function [position,p1] = STO(rx_data,N,sk)
         M(i) = abs(p1(i))*abs(p2(i))/R_E(i)^2;
     end
     position = M;
-    
 end
 
