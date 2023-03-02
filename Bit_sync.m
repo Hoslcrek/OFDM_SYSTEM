@@ -1,4 +1,4 @@
-function [position,p1] = STO(rx_data,N,sk)
+function [position,p1] = Bit_sync(rx_data,N,sk)
 %STO 此处显示有关此函数的摘要
 %   此处显示详细说明
     rx_data_conj = conj(rx_data);
@@ -13,5 +13,9 @@ function [position,p1] = STO(rx_data,N,sk)
         M(i) = abs(p1(i))*abs(p2(i))/R_E(i)^2;
     end
     position = M;
+    figure(30);
+    plot(abs(p1),'bo');
+    figure(31);
+    plot(abs(p2),'bo');
 end
 

@@ -1,6 +1,6 @@
 # OFDM_SYSTEM
 
-### 基于ADALM-PLUTO自发自收的OFDM系统
+### 基于ADALM-PLUTO的OFDM系统
 
 ### 需安装的Toolbox和硬件支持包：
 DSP System Toolbox
