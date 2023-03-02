@@ -22,5 +22,6 @@ function f_fixed_data = CFO(rx_data,start,N,p1,fft_num)
     fix_f3 = fix_f3 - 1;
     IFO_seq = rx_data.*exp(-1i*2*pi*4*(fix_f3)*(1:length(FFO_seq))./(fft_num));
     f_fixed_data = IFO_seq;
+    % fprintf('ÆµÆ«¹À¼ÆÖµ%f\n',4*fix_f3 + fix_f2 + fix_f1);
 end
 

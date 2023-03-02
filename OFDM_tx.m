@@ -39,7 +39,7 @@
 % sk_len = 64;
 % [zc_added_sym,sk] = Insert_zcseq(tx_data);
 
-load(OFDM_tx.mat);
+load('OFDM_tx.mat');
 
 txPluto = sdrtx('Pluto','RadioID','usb:0','CenterFrequency',4e8, ...
     'BasebandSampleRate',fs,'ChannelMapping',1,'Gain',0);

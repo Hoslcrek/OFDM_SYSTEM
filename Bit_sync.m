@@ -13,9 +13,5 @@ function [position,p1] = Bit_sync(rx_data,N,sk)
         M(i) = abs(p1(i))*abs(p2(i))/R_E(i)^2;
     end
     position = M;
-    figure(30);
-    plot(abs(p1),'bo');
-    figure(31);
-    plot(abs(p2),'bo');
 end
 

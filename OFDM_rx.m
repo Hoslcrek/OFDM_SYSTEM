@@ -1,10 +1,14 @@
-load(OFDM_tx.mat);
+clc;
+clear;
+load('OFDM_tx.mat');
 
 rxPluto = sdrrx('Pluto','RadioID','usb:0','CenterFrequency',4e8, ...
     'BasebandSampleRate',fs,'ChannelMapping',1,'OutputDataType','double','Gain',30,'SamplesPerFrame',length(zc_added_sym)*4); 
 
 i = 10000;
-
+count = 1;
+MAX_COUNT = 30;
+error_rate = zeros(1,MAX_COUNT);
 while(i>0)
     % 接收
     [rx_data,datavalid,overflow] = rxPluto();
@@ -66,12 +70,17 @@ while(i>0)
         % 解turbo码
         data_dem = lteTurboDecode(QPSK_dem_data).';
         
-        error_rate = sum(abs(data - double(data_dem)))/length(data);
-        fprintf('error rate = %f\n',error_rate);
+  
+        error_rate(count) = sum(abs(data - double(data_dem)))/length(data);
+        fprintf('error rate = %f\n',error_rate(count));
         
-        break;
+        count = count + 1;
+        if(count == MAX_COUNT + 1)
+            fprintf('%d次的平均误码率为: %f\n',MAX_COUNT,mean(error_rate));
+            break;
+        end
     else
-        fprintf('no signal');
+        fprintf('no signal\n');
     end
 end
 
