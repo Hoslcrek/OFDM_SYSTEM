@@ -76,22 +76,18 @@ while(i>0)
     % 同步 
     % 算法采用这个 [1]刘彬,罗志年,彭疆.改进CAZAC序列的OFDM时频同步算法[J].计算机工程与应用,2017,53(14):76-79+98.
     
-    [M,p1] = STO(rx_data,N,sk);
+    [M,p1] = Bit_sync(rx_data,N,sk);
     figure(1);
-    plot(M);
+    plot(M,'bo');
     
-    STO_loc = find(M > 0.25);
-    if(length(STO_loc) > 1)
+    start_loc = find(M > 0.3);
+    if(length(start_loc) > 1)
 
-
-        start = STO_loc(1);
+        start = start_loc(1);
         
         % 频偏纠正
-        CFO_seq = CFO(rx_data,start,N,p1,ifft_num);
+        CFO_seq = CFO(rx_data,start,N,p1);
         rx_seq = CFO_seq(start+N:start+N+length(tx_data)-1);
-        
-        figure(2);
-        plot(rx_seq,'go');
         
         % 去掉循环前缀
         del_cp_sym = Del_cp(rx_seq,ifft_num,cp_length);
@@ -101,9 +97,18 @@ while(i>0)
         carrier_num = size(inserted_sym,1);
         de_OFDM_sym = OFDM_demodulate(del_cp_sym,fft_num,carrier_num);
         
+        % 不做频偏纠正对比
+        rx_test = rx_data(start+N:start+N+length(tx_data)-1);
+        del_cp_test = Del_cp(rx_test,ifft_num,cp_length);
+        de_OFDM_test = OFDM_demodulate(del_cp_test,fft_num,carrier_num);
+        figure(28);
+        plot(de_OFDM_test,'ro');
+        
         figure(9);
         plot(de_OFDM_sym,'ro');
         
+
+
         % 分离块状导频
         block_pilot = de_OFDM_sym(:,block_pilot_loc);
         data_mat = de_OFDM_sym(:,data_row_loc);
@@ -121,8 +126,8 @@ while(i>0)
         comb_pilot = data_balanced(comb_pilot_loc,:);
         data_mat = data_balanced(data_col_loc,:);
         pilot2 = (ones(size(comb_pilot,1),size(comb_pilot,2)) + ones(size(comb_pilot,1),size(comb_pilot,2)).*1i)./sqrt(2);
-        h_fft=comb_pilot.*conj(pilot2);
-        h_time=ifft(h_fft);
+        h_fft0=comb_pilot.*conj(pilot2);
+        h_time=ifft(h_fft0);
         h_fft=fft(h_time,size(data_mat,1));
         data_balanced=data_mat./h_fft;
         
@@ -141,8 +146,8 @@ while(i>0)
         plot(quant_data.' - turbo_mod,'bo');  
         figure(21);
         plot(data - double(data_dem),'bo');  
-        
-        
+        error_rate = mean(abs(data-double(data_dem)));
+        fprintf('error rate: %f',error_rate);
         break;
     else
         
@@ -150,4 +155,5 @@ while(i>0)
 
    
 end
+   
 

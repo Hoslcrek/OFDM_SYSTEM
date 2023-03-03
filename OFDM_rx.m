@@ -29,7 +29,7 @@ while(i>0)
         start = start_loc(1);
         
         % 频偏纠正
-        CFO_seq = CFO(rx_data,start,N,p1,ifft_num);
+        CFO_seq = CFO(rx_data,start,N,p1);
         rx_seq = CFO_seq(start+N:start+N+length(tx_data)-1);
         
         % 去掉循环前缀
